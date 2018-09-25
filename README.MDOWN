@@ -1,0 +1,14 @@
+这是一个我的个人博客，博客地址： [https://neveryu.github.io/](https://neveryu.github.io/)
+
+## Build Setup
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:4000
+npm run dev
+
+# build with hot reload
+npm run dev-proxy
+```
