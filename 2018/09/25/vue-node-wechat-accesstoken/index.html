@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT, Vue, Nodejs" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一直都想搞一下微信公众号网页开发,公司忙没有时间自己也没开发过所以也没有头绪,前两天通过自己的摸索以及自行查找的资料,终于通过nodejs在本地成功的获取到了微信的access_token及签名,以及调用微信的接口.因为笔者自己在做的时候费了挺长时间,没有找到一个相对完整,详细的一个项目借鉴,有很多的坑,所以下面我将详细的把自己做的过程给大家讲一下,从一开始的注册微信公众号到成功调用微信接口,以给">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue通过NodeJs本地获取微信access_token及签名,并调用微信接口">
+<meta property="og:url" content="https://zhounick.github.io/2018/09/25/vue-node-wechat-accesstoken/index.html">
+<meta property="og:site_name" content="NickZhou&#39;s Blog">
+<meta property="og:description" content="一直都想搞一下微信公众号网页开发,公司忙没有时间自己也没开发过所以也没有头绪,前两天通过自己的摸索以及自行查找的资料,终于通过nodejs在本地成功的获取到了微信的access_token及签名,以及调用微信的接口.因为笔者自己在做的时候费了挺长时间,没有找到一个相对完整,详细的一个项目借鉴,有很多的坑,所以下面我将详细的把自己做的过程给大家讲一下,从一开始的注册微信公众号到成功调用微信接口,以给">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic1.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic2.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic3.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic4.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic5.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic6.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic7.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic8.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic9.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic10.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic11.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic12.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic13.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic14.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic15.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic16.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic17.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic18.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic19.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic20.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic21.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic22.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic23.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic24.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic25.jpg">
+<meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/gongzhonghao_qrcode.jpg">
+<meta property="og:updated_time" content="2018-09-25T09:11:45.221Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue通过NodeJs本地获取微信access_token及签名,并调用微信接口">
+<meta name="twitter:description" content="一直都想搞一下微信公众号网页开发,公司忙没有时间自己也没开发过所以也没有头绪,前两天通过自己的摸索以及自行查找的资料,终于通过nodejs在本地成功的获取到了微信的access_token及签名,以及调用微信的接口.因为笔者自己在做的时候费了挺长时间,没有找到一个相对完整,详细的一个项目借鉴,有很多的坑,所以下面我将详细的把自己做的过程给大家讲一下,从一开始的注册微信公众号到成功调用微信接口,以给">
+<meta name="twitter:image" content="https://zhounick.github.io/images/wechat_access_token/pic1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Nick'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhounick.github.io/2018/09/25/vue-node-wechat-accesstoken/"/>
+
+
+
+
+
+  <title>vue通过NodeJs本地获取微信access_token及签名,并调用微信接口 | NickZhou's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d072262c1c02599537b49cae82c05d3b";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">NickZhou's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">生活不简单，尽量简单过</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://zhounick.github.io/2018/09/25/vue-node-wechat-accesstoken/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nick">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NickZhou's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue通过NodeJs本地获取微信access_token及签名,并调用微信接口</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T10:15:45+08:00">
+                2018-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/25/vue-node-wechat-accesstoken/" class="leancloud_visitors" data-flag-title="vue通过NodeJs本地获取微信access_token及签名,并调用微信接口">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">热度
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>℃
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一直都想搞一下微信公众号网页开发,公司忙没有时间自己也没开发过所以也没有头绪,前两天通过自己的摸索以及自行查找的资料,终于通过nodejs在本地成功的获取到了微信的access_token及签名,以及调用微信的接口.因为笔者自己在做的时候费了挺长时间,没有找到一个相对完整,详细的一个项目借鉴,有很多的坑,所以下面我将详细的把自己做的过程给大家讲一下,从一开始的注册微信公众号到成功调用微信接口,以给那些还没有开发过经验的人借鉴,第一次写文章,文笔不好,勿怪.</p>
+<a id="more"></a>
+<h2 id="注册一个微信公众号"><a href="#注册一个微信公众号" class="headerlink" title="注册一个微信公众号"></a>注册一个微信公众号</h2><p>怎么注册微信公众号,可以自行百度一下,网上很多注册的教程,这里就不浪费口舌了</p>
+<h2 id="开通”开发者模式”"><a href="#开通”开发者模式”" class="headerlink" title="开通”开发者模式”"></a>开通”开发者模式”</h2><p>在微信公众平台官网登录之后,我们第一步是要成为开发者,在首页点击”基本配置”,右边会出现一个页面,有个”成为开发者”按钮,点击它,我这里我已经是开发者了,所以已经没有了<br><img src="/images/wechat_access_token/pic1.jpg" alt="pic1"></p>
+<h2 id="查看基本信息"><a href="#查看基本信息" class="headerlink" title="查看基本信息"></a>查看基本信息</h2><p>成为开发者之后,可以看到如下页面,我们可以看到自己的AppId和Appsecret(这个很重要,最好记在哪里,记在手机/笔记本都可以)<br><img src="/images/wechat_access_token/pic2.jpg" alt="pic2"><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></p>
+<h2 id="申请微信公众号测试账号"><a href="#申请微信公众号测试账号" class="headerlink" title="申请微信公众号测试账号"></a>申请微信公众号测试账号</h2><p>为什么申请测试账号,一因为微信公众号的接口它是有调用次数限制的,二是测试账号比较方便,可以胡来,哈哈哈,点击”开发-&gt;开发者工具”,就在之前点击的”基本配置”下面(如后面出现一些点击”xxx”,一般都在页面左侧),可以看到如下页面,选择”公众平台测试账号”,然后我们需要用手机微信扫码登录<br><img src="/images/wechat_access_token/pic3.jpg" alt="pic3"></p>
+<h2 id="测试账号配置"><a href="#测试账号配置" class="headerlink" title="测试账号配置"></a>测试账号配置</h2><p>登录成功之后,会看到下面的页面,在我圈的红色框中,填写你的域名,比如我vue本地项目启动成功后是localhost:9999,你就填localhost:9999,如果是云服务器域名,你就填你申请的域名,如<a href="http://www.xxx.com,上面的接口配置信息暂时可以不用配置,到这里我们已经完成了整个微信公众号测试账号的配置" target="_blank" rel="noopener">www.xxx.com,上面的接口配置信息暂时可以不用配置,到这里我们已经完成了整个微信公众号测试账号的配置</a><br><img src="/images/wechat_access_token/pic4.jpg" alt="pic4"></p>
+<h2 id="创建vue项目"><a href="#创建vue项目" class="headerlink" title="创建vue项目"></a>创建vue项目</h2><p>这里的前提是你已经安装了node并且会vue,我们通过vue-cli创建一个项目,创建项目过程的截图我就不放出来了,移步到<a href="https://github.com/vuejs/vue-cli/tree/v2#vue-cli--" target="_blank" rel="noopener">这里</a>查看,如果看不懂,也可以自行百度一下 哈哈哈,网上也有很多怎么通过vue-cli创建vue项目,我创建这个项目用的是vue-cli 2.0,现在已经是vue-cli 3.0,我自己也是在摸索中  嘿嘿…下面的图就是通过vue-cli创建的项目<br><img src="/images/wechat_access_token/pic5.jpg" alt="pic5"></p>
+<h2 id="node配置"><a href="#node配置" class="headerlink" title="node配置"></a>node配置</h2><p>注意在上图中, <strong>server文件夹</strong> 是需要自行创建的,vue-cli创建的项目是没有这个文件夹的,里面放了相关的nodejs代码,接下来我们看看里面都有什么文件,下图中我给主要的文件都作了注释,其余2个是链接Mysql数据库的,我这里就不讲了,我自己也不是很会,也是参照别人的,哈哈哈,就不献丑了<br><img src="/images/wechat_access_token/pic6.jpg" alt="pic6"></p>
+<p>我们先看看api.js,这里面就写了一个方法是用来获取access_token和签名的,这里用的是axios,所以在vue项目里你要安装axios.接下来我们先定义一下appId和appsecret,值就是你之前申请测试账号时的appId和appsecret,请求地址在微信开发者文档里有,移步<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140183" target="_blank" rel="noopener">微信开发者文档</a>,获取到access_token之后,我们通过access_token获取微信签名(微信签名算法在sign.js,稍后我会贴出来),然后返回获取到的数据,这里的定义的config对象也可以在微信开发者文档里看,你也可以定义在前端—–我们是通过module.exports把代码暴露出去以便引用<br><img src="/images/wechat_access_token/pic7.jpg" alt="pic7"></p>
+<p><strong>微信签名算法</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> createNonceStr = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.random().toString(<span class="number">36</span>).substr(<span class="number">2</span>, <span class="number">15</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> createTimestamp = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">parseInt</span>(<span class="keyword">new</span> <span class="built_in">Date</span>().getTime() / <span class="number">1000</span>) + <span class="string">''</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> raw = <span class="function"><span class="keyword">function</span> (<span class="params">args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(args);</span><br><span class="line">    keys = keys.sort();</span><br><span class="line">    <span class="keyword">var</span> newArgs = &#123;&#125;;</span><br><span class="line">    keys.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">key</span>) </span>&#123;</span><br><span class="line">        newArgs[key.toLowerCase()] = args[key];</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">var</span> string = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> k <span class="keyword">in</span> newArgs) &#123;</span><br><span class="line">        string += <span class="string">'&amp;'</span> + k + <span class="string">'='</span> + newArgs[k];</span><br><span class="line">    &#125;</span><br><span class="line">    string = string.substr(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> string;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*@synopsis 签名算法</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* @param jsapi_ticket 用于签名的 jsapi_ticket</span></span><br><span class="line"><span class="comment">* @param url 用于签名的 url ，注意必须动态获取，不能 hardcode</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* @returns</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">var</span> sign = <span class="function"><span class="keyword">function</span> (<span class="params">jsapi_ticket, url</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> ret = &#123;</span><br><span class="line">        jsapi_ticket: jsapi_ticket,</span><br><span class="line">        nonceStr: createNonceStr(),</span><br><span class="line">        timestamp: createTimestamp(),</span><br><span class="line">        url: url</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">var</span> string = raw(ret);</span><br><span class="line">    jsSHA = <span class="built_in">require</span>(<span class="string">'jssha'</span>);</span><br><span class="line">    shaObj = <span class="keyword">new</span> jsSHA(string, <span class="string">'TEXT'</span>);</span><br><span class="line">    ret.signature = shaObj.getHash(<span class="string">'SHA-1'</span>, <span class="string">'HEX'</span>);</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">module</span>.exports = sign;</span><br></pre></td></tr></table></figure></p>
+<p>我们再看一下router.js,代码很少,就是你前端要请求的路由地址,这里我们要用到express,所以你也要保证你的vue项目里的node_modules包里有express,没有你就安装一下,不会安装就百度(屡试不爽),反正你缺少什么模块你就安装什么模块就行了,跑题了,继续说下图中的代码,我们引入之前的api.js,然后调用express.Router(express.Router可以认为是一个微型的只用来处理中间件与控制器的 app，它拥有和 app 类似的方法，例如 get、post、all、use 等等),定义了前端请求接口地址’/getToken’,调用api.js里定义的方法,也需要把router暴露出去<br><img src="/images/wechat_access_token/pic8.jpg" alt="pic8"></p>
+<p>最后我们看看index.js,这里我们把刚刚写好的router.js引入进来,把express也引入进来,并且创建一个express应用程序app(就是第4行代码),设置一下请求头和跨域还有返回的状态码,app.use()一下后端api路由,’/api’是调用中间件函数的路径,我前端用了代理,请求路径都增加了’/api’,所以后端的所有请求路径也要加上,最后app.listen(8088)监听端口号(你喜欢什么数字都行,端口号不用和我一样)<br><img src="/images/wechat_access_token/pic9.jpg" alt="pic9"></p>
+<p>下面我们通过cmder(或者你用window自带的cmd命令打开DOS窗口)进入server文件夹,输入node index.js启动8088端口,看启动成功了…<br><img src="/images/wechat_access_token/pic10.jpg" alt="pic10"></p>
+<h2 id="启动vue项目"><a href="#启动vue项目" class="headerlink" title="启动vue项目"></a>启动vue项目</h2><p>也通过cmder进入到vue项目所在的目录,npm run dev启动<br><img src="/images/wechat_access_token/pic11.jpg" alt="pic11"></p>
+<h2 id="前端环境配置"><a href="#前端环境配置" class="headerlink" title="前端环境配置"></a>前端环境配置</h2><p>然后我在static文件夹下面创建了一个js文件夹,里面放了一个环境配置的文件<br><img src="/images/wechat_access_token/pic12.jpg" alt="pic12"><br><img src="/images/wechat_access_token/pic13.jpg" alt="pic13"></p>
+<p>本地请求接口是localhost:8088,你也可以添加生产环境的,我这里还没添加,比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;production&apos;: &#123; apiRoot: &apos;http://www.xxx.cn:8088&apos;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>线上的不添加后面的端口号8088不知道可不可以我还没试过…然后在index.html里引用一下<br><img src="/images/wechat_access_token/pic14.jpg" alt="pic14"></p>
+<p>在”src”文件夹下创建一个api文件夹,在此文件下创建一个index.js,用来封装我们前端的请求<br><img src="/images/wechat_access_token/pic15.jpg" alt="pic15"><br><img src="/images/wechat_access_token/pic16.jpg" alt="pic16"></p>
+<p>这里的window._ENV.apiRoot就是我在static文件夹里的环境配置文件, 之前我们已经在index.html引入过了,所以能在这里用, 为什么这里要传url,因为在node里请求签名的时候签名算法那里需要</p>
+<h2 id="修改config配置"><a href="#修改config配置" class="headerlink" title="修改config配置"></a>修改config配置</h2><p>打开vue项目下的config文件夹里的index.js,设置一下代理,因为这里添加了”/api”,所以后端的都要加上,修改了配置,vue项目需要重新启动一下<br><img src="/images/wechat_access_token/pic17.jpg" alt="pic17"></p>
+<h2 id="测试获取token及签名-并调用微信接口"><a href="#测试获取token及签名-并调用微信接口" class="headerlink" title="测试获取token及签名,并调用微信接口"></a>测试获取token及签名,并调用微信接口</h2><p>我们先看看”src”文件夹里的目录结构,我把vue-cli自动创建的删了部分,然后自己创建了部分<br><img src="/images/wechat_access_token/pic18.jpg" alt="pic18"></p>
+<p>我们在pages文件夹里创建一个页面组件index<br><img src="/images/wechat_access_token/pic19.jpg" alt="pic19"><br><img src="/images/wechat_access_token/pic20.jpg" alt="pic20"></p>
+<p>下面是index.vue里的代码,这里我用到iview,所以是<i-button>, <strong>还有一个非常重要,安装一下微信jssdk,npm install weixin-js-sdk –save,</strong> 也可以自行百度查一下怎么安装,不然你什么功能都用不了,哈哈哈,我一开始就没安装,引入我们定义的api<br><img src="/images/wechat_access_token/pic21.jpg" alt="pic21"></i-button></p>
+<p>把请求token的方法写在methods里,然后created的时候调用,我这里写了两个按钮进行测试,用到了获取地理位置,打开地址位置,微信扫一扫接口,这里除了获取地理位置,其他通过用户交互的都写在methods里<br><img src="/images/wechat_access_token/pic22.jpg" alt="pic22"><br><img src="/images/wechat_access_token/pic23.jpg" alt="pic23"></p>
+<h2 id="使用微信开发者工具调试"><a href="#使用微信开发者工具调试" class="headerlink" title="使用微信开发者工具调试"></a>使用微信开发者工具调试</h2><p>下载并安装一下微信开发者工具(<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1455784140" target="_blank" rel="noopener">微信开发者工具下载</a>),用二维码登录,在地址栏输入你的vue启动地址,就OK了,可以查看接口是否调用成功了,这里一开始获取地理位置成功<br><img src="/images/wechat_access_token/pic24.jpg" alt="pic24"></p>
+<p>点击了两个按钮之后,也是成功了看下图,哈哈哈,很开心….<br><img src="/images/wechat_access_token/pic25.jpg" alt="pic25"></p>
+<p>文章到这里就结束了…大家也可以去我的github上查看我的源码(<a href="https://github.com/ZhouNick/myblog" target="_blank" rel="noopener">项目地址</a>),后面我会继续写一篇《如何将node + vue 项目部署到服务器上,并调用微信接口》,大家可以先感受一些我线上的demo(<a href="http://www.whispershirley.cn" target="_blank" rel="noopener">线上demo</a>),用手机微信打开,access_token一天上限是2000次,如果你没有体验成功,可能就是到上限了,也可以关注我的微信公众号,后面陆续的我会把文章发布到微信公众号上…附上公众号的二维码,目前还没有发布文章,不要嫌弃哈哈哈…或者也可以加我的微信:zjw1-9-9-4,如有问题可以在下面评论,或者指出我的问题,大家互相学习,谢谢…<br><img src="/images/wechat_access_token/gongzhonghao_qrcode.jpg" alt="qrcode"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Nick" />
+            
+              <p class="site-author-name" itemprop="name">Nick</p>
+              <p class="site-description motion-element" itemprop="description">生活不简单，尽量简单过</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#注册一个微信公众号"><span class="nav-number">1.</span> <span class="nav-text">注册一个微信公众号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开通”开发者模式”"><span class="nav-number">2.</span> <span class="nav-text">开通”开发者模式”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看基本信息"><span class="nav-number">3.</span> <span class="nav-text">查看基本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#申请微信公众号测试账号"><span class="nav-number">4.</span> <span class="nav-text">申请微信公众号测试账号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试账号配置"><span class="nav-number">5.</span> <span class="nav-text">测试账号配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建vue项目"><span class="nav-number">6.</span> <span class="nav-text">创建vue项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#node配置"><span class="nav-number">7.</span> <span class="nav-text">node配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动vue项目"><span class="nav-number">8.</span> <span class="nav-text">启动vue项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端环境配置"><span class="nav-number">9.</span> <span class="nav-text">前端环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改config配置"><span class="nav-number">10.</span> <span class="nav-text">修改config配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试获取token及签名-并调用微信接口"><span class="nav-number">11.</span> <span class="nav-text">测试获取token及签名,并调用微信接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用微信开发者工具调试"><span class="nav-number">12.</span> <span class="nav-text">使用微信开发者工具调试</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nick</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      您是第
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      个小伙伴
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总浏览
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("l6EVdV93BM2NRDbGK0miRJhs-gzGzoHsz", "COn5f3m47A66EDcmJnJKALgR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
