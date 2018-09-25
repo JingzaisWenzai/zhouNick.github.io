@@ -89,7 +89,7 @@
 <meta name="description" content="一直都想搞一下微信公众号网页开发,公司忙没有时间自己也没开发过所以也没有头绪,前两天通过自己的摸索以及自行查找的资料,终于通过nodejs在本地成功的获取到了微信的access_token及签名,以及调用微信的接口.因为笔者自己在做的时候费了挺长时间,没有找到一个相对完整,详细的一个项目借鉴,有很多的坑,所以下面我将详细的把自己做的过程给大家讲一下,从一开始的注册微信公众号到成功调用微信接口,以给">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue通过NodeJs本地获取微信access_token及签名,并调用微信接口">
-<meta property="og:url" content="https://zhounick.github.io/2018/09/25/vue-node-wechat-accesstoken/index.html">
+<meta property="og:url" content="https://zhounick.github.io/2018/09/25/hello-world/index.html">
 <meta property="og:site_name" content="NickZhou&#39;s Blog">
 <meta property="og:description" content="一直都想搞一下微信公众号网页开发,公司忙没有时间自己也没开发过所以也没有头绪,前两天通过自己的摸索以及自行查找的资料,终于通过nodejs在本地成功的获取到了微信的access_token及签名,以及调用微信的接口.因为笔者自己在做的时候费了挺长时间,没有找到一个相对完整,详细的一个项目借鉴,有很多的坑,所以下面我将详细的把自己做的过程给大家讲一下,从一开始的注册微信公众号到成功调用微信接口,以给">
 <meta property="og:locale" content="zh-Hans">
@@ -119,7 +119,7 @@
 <meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic24.jpg">
 <meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/pic25.jpg">
 <meta property="og:image" content="https://zhounick.github.io/images/wechat_access_token/gongzhonghao_qrcode.jpg">
-<meta property="og:updated_time" content="2018-09-25T10:45:31.322Z">
+<meta property="og:updated_time" content="2018-09-25T09:55:08.262Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vue通过NodeJs本地获取微信access_token及签名,并调用微信接口">
 <meta name="twitter:description" content="一直都想搞一下微信公众号网页开发,公司忙没有时间自己也没开发过所以也没有头绪,前两天通过自己的摸索以及自行查找的资料,终于通过nodejs在本地成功的获取到了微信的access_token及签名,以及调用微信的接口.因为笔者自己在做的时候费了挺长时间,没有找到一个相对完整,详细的一个项目借鉴,有很多的坑,所以下面我将详细的把自己做的过程给大家讲一下,从一开始的注册微信公众号到成功调用微信接口,以给">
@@ -153,7 +153,7 @@
 
 
 
-  <link rel="canonical" href="https://zhounick.github.io/2018/09/25/vue-node-wechat-accesstoken/"/>
+  <link rel="canonical" href="https://zhounick.github.io/2018/09/25/hello-world/"/>
 
 
 
@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://zhounick.github.io/2018/09/25/vue-node-wechat-accesstoken/">
+    <link itemprop="mainEntityOfPage" href="https://zhounick.github.io/2018/09/25/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Nick">
@@ -345,7 +345,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T18:45:31+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T10:15:45+08:00">
                 2018-09-25
               </time>
             
@@ -363,7 +363,7 @@
 
           
           
-             <span id="/2018/09/25/vue-node-wechat-accesstoken/" class="leancloud_visitors" data-flag-title="vue通过NodeJs本地获取微信access_token及签名,并调用微信接口">
+             <span id="/2018/09/25/hello-world/" class="leancloud_visitors" data-flag-title="vue通过NodeJs本地获取微信access_token及签名,并调用微信接口">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -405,7 +405,7 @@
 <h2 id="开通”开发者模式”"><a href="#开通”开发者模式”" class="headerlink" title="开通”开发者模式”"></a>开通”开发者模式”</h2><p>在微信公众平台官网登录之后,我们第一步是要成为开发者,在首页点击”基本配置”,右边会出现一个页面,有个”成为开发者”按钮,点击它,我这里我已经是开发者了,所以已经没有了<br><img src="/images/wechat_access_token/pic1.jpg" alt="pic1"></p>
 <h2 id="查看基本信息"><a href="#查看基本信息" class="headerlink" title="查看基本信息"></a>查看基本信息</h2><p>成为开发者之后,可以看到如下页面,我们可以看到自己的AppId和Appsecret(这个很重要,最好记在哪里,记在手机/笔记本都可以)<br><img src="/images/wechat_access_token/pic2.jpg" alt="pic2"><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></p>
 <h2 id="申请微信公众号测试账号"><a href="#申请微信公众号测试账号" class="headerlink" title="申请微信公众号测试账号"></a>申请微信公众号测试账号</h2><p>为什么申请测试账号,一因为微信公众号的接口它是有调用次数限制的,二是测试账号比较方便,可以胡来,哈哈哈,点击”开发-&gt;开发者工具”,就在之前点击的”基本配置”下面(如后面出现一些点击”xxx”,一般都在页面左侧),可以看到如下页面,选择”公众平台测试账号”,然后我们需要用手机微信扫码登录<br><img src="/images/wechat_access_token/pic3.jpg" alt="pic3"></p>
-<h2 id="测试账号配置"><a href="#测试账号配置" class="headerlink" title="测试账号配置"></a>测试账号配置</h2><p>登录成功之后,会看到下面的页面,在我圈的红色框中,填写你的域名,比如我vue本地项目启动成功后是localhost:9999,你就填localhost:9999,如果是云服务器域名,你就填你申请的域名,如 <a href="http://www.xxx.com" target="_blank" rel="noopener">www.xxx.com</a> ,上面的接口配置信息暂时可以不用配置,到这里我们已经完成了整个微信公众号测试账号的配置<br><img src="/images/wechat_access_token/pic4.jpg" alt="pic4"></p>
+<h2 id="测试账号配置"><a href="#测试账号配置" class="headerlink" title="测试账号配置"></a>测试账号配置</h2><p>登录成功之后,会看到下面的页面,在我圈的红色框中,填写你的域名,比如我vue本地项目启动成功后是localhost:9999,你就填localhost:9999,如果是云服务器域名,你就填你申请的域名,如 ‘<a href="http://www.xxx.com&#39;" target="_blank" rel="noopener">www.xxx.com&#39;</a> ,上面的接口配置信息暂时可以不用配置,到这里我们已经完成了整个微信公众号测试账号的配置<br><img src="/images/wechat_access_token/pic4.jpg" alt="pic4"></p>
 <h2 id="创建vue项目"><a href="#创建vue项目" class="headerlink" title="创建vue项目"></a>创建vue项目</h2><p>这里的前提是你已经安装了node并且会vue,我们通过vue-cli创建一个项目,创建项目过程的截图我就不放出来了,移步到<a href="https://github.com/vuejs/vue-cli/tree/v2#vue-cli--" target="_blank" rel="noopener">这里</a>查看,如果看不懂,也可以自行百度一下 哈哈哈,网上也有很多怎么通过vue-cli创建vue项目,我创建这个项目用的是vue-cli 2.0,现在已经是vue-cli 3.0,我自己也是在摸索中  嘿嘿…下面的图就是通过vue-cli创建的项目<br><img src="/images/wechat_access_token/pic5.jpg" alt="pic5"></p>
 <h2 id="node配置"><a href="#node配置" class="headerlink" title="node配置"></a>node配置</h2><p>注意在上图中, <strong>server文件夹</strong> 是需要自行创建的,vue-cli创建的项目是没有这个文件夹的,里面放了相关的nodejs代码,接下来我们看看里面都有什么文件,下图中我给主要的文件都作了注释,其余2个是链接Mysql数据库的,我这里就不讲了,我自己也不是很会,也是参照别人的,哈哈哈,就不献丑了<br><img src="/images/wechat_access_token/pic6.jpg" alt="pic6"></p>
 <p>我们先看看api.js,这里面就写了一个方法是用来获取access_token和签名的,这里用的是axios,所以在vue项目里你要安装axios.接下来我们先定义一下appId和appsecret,值就是你之前申请测试账号时的appId和appsecret,请求地址在微信开发者文档里有,移步<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140183" target="_blank" rel="noopener">微信开发者文档</a>,获取到access_token之后,我们通过access_token获取微信签名(微信签名算法在sign.js,稍后我会贴出来),然后返回获取到的数据,这里的定义的config对象也可以在微信开发者文档里看,你也可以定义在前端—–我们是通过module.exports把代码暴露出去以便引用<br><img src="/images/wechat_access_token/pic7.jpg" alt="pic7"></p>
@@ -451,15 +451,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/25/hello-world/" rel="next" title="vue通过NodeJs本地获取微信access_token及签名,并调用微信接口">
-                <i class="fa fa-chevron-left"></i> vue通过NodeJs本地获取微信access_token及签名,并调用微信接口
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/25/vue-node-wechat-accesstoken/" rel="prev" title="vue通过NodeJs本地获取微信access_token及签名,并调用微信接口">
+                vue通过NodeJs本地获取微信access_token及签名,并调用微信接口 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
